@@ -1,11 +1,10 @@
 import torch
 
 import numpy as np
-from torch.nn.modules.linear import Linear
-from torch.nn.modules.rnn import LSTMCell
 
 from overrides import overrides
-
+from torch.nn.modules.linear import Linear
+from torch.nn.modules.rnn import LSTMCell
 from allennlp.modules.similarity_functions import SimilarityFunction
 from allennlp.common.util import START_SYMBOL, END_SYMBOL
 from allennlp.modules import Attention, TextFieldEmbedder, Seq2SeqEncoder
@@ -19,6 +18,7 @@ from allennlp.nn.beam_search import BeamSearch
 from typing import Dict, Optional, List, Tuple, Union, Iterable, Any
 
 Labels = List[Any]
+
 
 
 class G2PSeq2Seq(SimpleSeq2Seq):

@@ -10,10 +10,12 @@ from allennlp.modules.text_field_embedders import BasicTextFieldEmbedder
 from allennlp.modules.seq2seq_encoders import StackedSelfAttentionEncoder
 from allennlp.modules.attention import DotProductAttention
 from allennlp.predictors import SimpleSeq2SeqPredictor
-
 from src.architectures import G2PSeq2Seq, WhitespaceTokenizer
 
+
+
 class Russian_G2P:
+    
     def __init__(
         self, model_path, LET_EMBEDDING_DIM=256,
         SOU_EMBEDDING_DIM=256, HIDDEN_DIM=256, CUDA_DEVICE=0
