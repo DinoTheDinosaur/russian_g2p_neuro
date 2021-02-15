@@ -18,7 +18,7 @@ class Russian_G2P:
     
     def __init__(
         self, model_path, LET_EMBEDDING_DIM=256,
-        SOU_EMBEDDING_DIM=256, HIDDEN_DIM=256, CUDA_DEVICE=0
+        SOU_EMBEDDING_DIM=256, HIDDEN_DIM=256
     ):
         reader = Seq2SeqDatasetReader(
             source_tokenizer=CharacterTokenizer(),
@@ -32,8 +32,8 @@ class Russian_G2P:
         let_embedding = Embedding(
             num_embeddings=vocab.get_vocab_size('tokens'),
             embedding_dim=LET_EMBEDDING_DIM
-        ).to(CUDA_DEVICE)
-        source_embedder = BasicTextFieldEmbedder({"tokens": let_embedding}).to(CUDA_DEVICE)
+        )
+        source_embedder = BasicTextFieldEmbedder({"tokens": let_embedding})
 
         encoder = StackedSelfAttentionEncoder(
             input_dim=LET_EMBEDDING_DIM,
@@ -42,9 +42,9 @@ class Russian_G2P:
             feedforward_hidden_dim=128,
             num_layers=1,
             num_attention_heads=8
-        ).to(CUDA_DEVICE)
+        )
 
-        attention = DotProductAttention().to(CUDA_DEVICE)
+        attention = DotProductAttention()
 
         max_decoding_steps = 40
         model = G2PSeq2Seq(
@@ -53,10 +53,10 @@ class Russian_G2P:
             target_namespace='target_tokens',
             attention=attention,
             beam_size=5
-        ).to(CUDA_DEVICE)
+        )
 
         with open(os.path.join(model_path, 'weights.th'), 'rb') as f:
-            model.load_state_dict(torch.load(f))
+            model.load_state_dict(torch.load(f, map_location=torch.device('cpu')))
         
         self.predictor = SimpleSeq2SeqPredictor(model, reader)
 
